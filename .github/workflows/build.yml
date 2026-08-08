@@ -24,6 +24,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
       - name: Fetch ReAPI SDK
         shell: pwsh
         run: git clone --depth 1 --branch 5.29.0.358 https://github.com/rehlds/ReAPI.git .deps/ReAPI
