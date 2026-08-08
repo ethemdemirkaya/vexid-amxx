@@ -1,0 +1,19 @@
+# Visual Studio / native build output
+build/
+**/build/
+*.obj
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.user
+*.suo
+.vs/
+
+# Local dependencies and release staging
+.deps/
+.dist-stage/
+dist/
+
+# Compiled artifacts are published as GitHub Release assets
+bin/
