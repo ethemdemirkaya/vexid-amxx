@@ -1,0 +1,42 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install 32-bit toolchain
+        run: sudo apt-get update && sudo apt-get install -y g++-multilib
+      - name: Fetch ReAPI SDK
+        run: git clone --depth 1 --branch 5.29.0.358 https://github.com/rehlds/ReAPI.git .deps/ReAPI
+      - name: Build and test
+        run: make REAPI_ROOT="$GITHUB_WORKSPACE/.deps/ReAPI/reapi" test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vexid-linux
+          path: bin/linux/vexid_amxx_i386.so
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch ReAPI SDK
+        shell: pwsh
+        run: git clone --depth 1 --branch 5.29.0.358 https://github.com/rehlds/ReAPI.git .deps/ReAPI
+      - name: Build module
+        shell: pwsh
+        run: msbuild msvc/vexid.vcxproj /p:Configuration=Release /p:Platform=Win32 /p:VexReapiRoot="$env:GITHUB_WORKSPACE\.deps\ReAPI\reapi" /m
+      - name: Build mock tests
+        shell: pwsh
+        run: |
+          msbuild tests/native_harness/mock_swds.vcxproj /p:Configuration=Release /p:Platform=Win32 /p:VexReapiRoot="$env:GITHUB_WORKSPACE\.deps\ReAPI\reapi" /m
+          msbuild tests/native_harness/vexid_harness.vcxproj /p:Configuration=Release /p:Platform=Win32 /p:VexReapiRoot="$env:GITHUB_WORKSPACE\.deps\ReAPI\reapi" /m
+          & tests/native_harness/build/vexid_harness.exe tests/native_harness/build/swds.dll bin/windows/vexid_amxx.dll
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vexid-windows
+          path: bin/windows/vexid_amxx.dll
