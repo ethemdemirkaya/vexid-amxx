@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32"><Configuration>Release</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{337F3418-70D6-434A-A37A-87BC713E8449}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <VexReapiRoot Condition="'$(VexReapiRoot)'==''">$(ProjectDir)..\..\..\..\Derleyici\reapi-5.29.0.358\reapi</VexReapiRoot>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration"><ConfigurationType>DynamicLibrary</ConfigurationType><PlatformToolset>v143</PlatformToolset><UseDebugLibraries>false</UseDebugLibraries></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup><TargetName>swds</TargetName><OutDir>$(ProjectDir)build\</OutDir><IntDir>$(ProjectDir)build\mock\</IntDir></PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel><TreatWarningAsError>true</TreatWarningAsError><Optimization>MaxSpeed</Optimization><RuntimeLibrary>MultiThreaded</RuntimeLibrary><LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;HAVE_STRONG_TYPEDEF;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(VexReapiRoot)\src;$(VexReapiRoot)\include;$(VexReapiRoot)\include\metamod;$(VexReapiRoot)\include\cssdk\common;$(VexReapiRoot)\include\cssdk\dlls;$(VexReapiRoot)\include\cssdk\engine;$(VexReapiRoot)\include\cssdk\game_shared;$(VexReapiRoot)\include\cssdk\pm_shared;$(VexReapiRoot)\include\cssdk\public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link><ModuleDefinitionFile>mock_swds.def</ModuleDefinitionFile><TargetMachine>MachineX86</TargetMachine></Link>
+  </ItemDefinitionGroup>
+  <ItemGroup><ClCompile Include="mock_swds.cpp" /></ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
